@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "valheim.fullname" . }}
+  labels:
+    app: {{ template "valheim.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "valheim.fullname" . }}
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: {{ template "valheim.fullname" . }}
+        release: "{{ .Release.Name }}"
+    spec:
+      containers:
+      - name: {{ template "valheim.fullname" . }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        imagePullPolicy: Always
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: SERVER_NAME
+          value: {{ .Values.valheimServer.serverName | quote }}
+        - name: SERVER_PORT
+          value: {{ .Values.valheimServer.serverPort | quote }}
+        - name: WORLD_NAME
+          value: {{ .Values.valheimServer.worldName | quote }}
+        - name: SERVER_PASS
+          value: {{ .Values.valheimServer.serverPass | quote }}
+        - name: SERVER_PUBLIC
+          value: {{ .Values.valheimServer.serverPublic | quote }}
+        - name: UPDATE_INTERVAL
+          value: {{ .Values.valheimServer.updateInterval | quote }}
+        - name: BACKUPS_INTERVAL
+          value: {{ .Values.valheimServer.backupsInterval | quote }}
+        - name: BACKUPS_DIRECTORY
+          value: {{ .Values.valheimServer.backupsDirectory | quote }}
+        - name: BACKUPS_MAX_AGE
+          value: {{ .Values.valheimServer.backupsMaxAge | quote }}
+
+        ports:
+        - name: valheim-1
+          containerPort: {{ .Values.valheimServer.serverPort | int }}
+          protocol: UDP
+        - name: valheim-2
+          containerPort: {{ .Values.valheimServer.serverPort | int | add 1 }}
+          protocol: UDP
+        - name: valheim-3
+          containerPort: {{ .Values.valheimServer.serverPort | int | add 2 }}
+          protocol: UDP
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ template "valheim.fullname" . }}-config

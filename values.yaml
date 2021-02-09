@@ -1,0 +1,30 @@
+# Valheim image version
+# ref: https://github.com/lloesche/valheim-server-docker
+image: lloesche/valheim-server
+imageTag: latest
+
+replicaCount: 1
+
+# Configure resource requests and limits
+# ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+
+valheimServer:
+  serverName: Valheim Kubernetes Server
+  serverPort: 2456
+  worldName: Valheim World
+  serverPass: valheim-server
+  serverPublic: 1
+  updateInterval: 10800 # every 3 hours
+  backupsInterval: 43200 # every 12 hours
+  backupsDirectory: /config/backups
+  backupsMaxAge: 3 # 3 days
+  serviceType: LoadBalancer
+
+persistence:
+  config:
+    enabled: true
+    size: 1Gi

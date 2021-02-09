@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "valheim.fullname" . }}
+  labels:
+    app: {{ template "valheim.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: {{ .Values.valheimServer.serviceType }}
+  ports:
+  {{- if eq "LoadBalancer" .Values.valheimServer.serviceType }}
+  - name: valheim-1
+    port: {{ .Values.valheimServer.serverPort | int }}
+    targetPort: valheim-1
+    protocol: UDP
+  - name: valheim-2
+    port: {{ .Values.valheimServer.serverPort | int | add 1 }}
+    targetPort: valheim-2
+    protocol: UDP
+  - name: valheim-3
+    port: {{ .Values.valheimServer.serverPort | int | add 2 }}
+    targetPort: valheim-3
+    protocol: UDP
+  {{- else }}
+  - name: valheim-1
+    port: {{ .Values.valheimServer.serverPort | int }}
+    targetPort: valheim-1
+    nodePort: {{ .Values.valheimServer.serverPort | int }}
+    protocol: UDP
+  - name: valheim-2
+    port: {{ .Values.valheimServer.serverPort | int | add 1 }}
+    targetPort: valheim-2
+    nodePort: {{ .Values.valheimServer.serverPort | int | add 1 }}
+    protocol: UDP
+  - name: valheim-3
+    port: {{ .Values.valheimServer.serverPort | int | add 2 }}
+    targetPort: valheim-3
+    nodePort: {{ .Values.valheimServer.serverPort | int | add 2 }}
+    protocol: UDP
+  {{- end }}
+  selector:
+    app: {{ template "valheim.fullname" . }}
