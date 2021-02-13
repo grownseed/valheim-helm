@@ -14,3 +14,6 @@ spec:
     requests:
       storage: {{ .Values.persistence.config.size | quote }}
 
+{{- if .Values.persistence.config.storageClassName }}
+  storageClassName: {{ .Values.persistence.config.storageClassName }}
+{{- end }}
