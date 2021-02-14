@@ -61,4 +61,8 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
+{{- if .Values.persistence.claimName }}
+          claimName: {{ .Values.persistence.claimName }}
+{{- else }}
           claimName: {{ template "valheim.fullname" . }}-config
+{{- end }}
