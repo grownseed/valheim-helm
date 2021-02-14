@@ -29,3 +29,4 @@ persistence:
     enabled: true
     size: 1Gi
     # storageClassName: -
+  claimName: "" # provide a value to prevent PVC creation
