@@ -23,6 +23,7 @@ spec:
     port: {{ .Values.valheimServer.serverPort | int | add 2 }}
     targetPort: valheim-3
     protocol: UDP
+    externalTrafficPolicy: {{ .Values.valheimServer.externalTrafficPolicy }}
   {{- else }}
   - name: valheim-1
     port: {{ .Values.valheimServer.serverPort | int }}
