@@ -24,6 +24,9 @@ valheimServer:
   backupsMaxAge: 3 # 3 days
   serviceType: LoadBalancer
   externalTrafficPolicy: Cluster
+  updateCron: "*/15 * * * *"
+  restartCron: "0 5 * * *"
+  timezone: UTC
 
 persistence:
   config:
