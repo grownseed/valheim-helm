@@ -23,6 +23,7 @@ valheimServer:
   backupsDirectory: /config/backups
   backupsMaxAge: 3 # 3 days
   serviceType: LoadBalancer
+  externalTrafficPolicy: Cluster
 
 persistence:
   config:
