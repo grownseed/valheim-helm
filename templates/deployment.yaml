@@ -44,6 +44,12 @@ spec:
           value: {{ .Values.valheimServer.backupsDirectory | quote }}
         - name: BACKUPS_MAX_AGE
           value: {{ .Values.valheimServer.backupsMaxAge | quote }}
+        - name: TZ
+          value: {{ .Values.valheimServer.timezone | quote }}
+        - name: RESTART_CRON
+          value: {{ .Values.valheimServer.restartCron | quote }}
+        - name: UPDATE_CRON
+          value: {{ .Values.valheimServer.updateCron | quote }}
 
         ports:
         - name: valheim-1
