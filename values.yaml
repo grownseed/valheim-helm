@@ -23,6 +23,9 @@ valheimServer:
   backupsDirectory: /config/backups
   backupsMaxAge: 3 # 3 days
   serviceType: LoadBalancer
+  updateCron: "*/15 * * * *"
+  restartCron: "0 5 * * *"
+  timezone: UTC
 
 persistence:
   config:
