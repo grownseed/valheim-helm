@@ -9,14 +9,13 @@ replicaCount: 1
 # ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
   requests:
-    memory: 512Mi
-    cpu: 500m
+    memory: 6G
+    cpu: 4.0
 
 valheimServer:
-  serverName: Valheim Kubernetes Server
+  serverName: Fishy Valheim Server
   serverPort: 2456
   worldName: Valheim World
-  serverPass: valheim-server
   serverPublic: 1
   updateInterval: 10800 # every 3 hours
   backupsInterval: 43200 # every 12 hours
@@ -31,6 +30,6 @@ valheimServer:
 persistence:
   config:
     enabled: true
-    size: 1Gi
-    # storageClassName: -
+    size: 10Gi
+    storageClassName: local-path
   claimName: "" # provide a value to prevent PVC creation

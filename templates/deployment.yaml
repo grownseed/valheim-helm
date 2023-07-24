@@ -33,7 +33,10 @@ spec:
         - name: WORLD_NAME
           value: {{ .Values.valheimServer.worldName | quote }}
         - name: SERVER_PASS
-          value: {{ .Values.valheimServer.serverPass | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: serversecret
+              key: password
         - name: SERVER_PUBLIC
           value: {{ .Values.valheimServer.serverPublic | quote }}
         - name: UPDATE_INTERVAL
@@ -50,6 +53,8 @@ spec:
           value: {{ .Values.valheimServer.restartCron | quote }}
         - name: UPDATE_CRON
           value: {{ .Values.valheimServer.updateCron | quote }}
+        - name: SERVER_ARGS
+          value: "-crossplay"
 
         ports:
         - name: valheim-1
